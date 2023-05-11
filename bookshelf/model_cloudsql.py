@@ -105,6 +105,22 @@ def searchByTitle(title):
     results = builtin_list(map(from_sql, Book.query.filter(Book.title.contains(title)).all()))
     return results
 
+def searchByAuthor(author):
+    results = builtin_list(map(from_sql, Book.query.filter(Book.author.contains(author)).all()))
+    return results
+
+def searchByDescription(description):
+    results = builtin_list(map(from_sql, Book.query.filter(Book.description.contains(description)).all()))
+    return results
+
+def searchByRating(rating):
+    results = builtin_list(map(from_sql, Book.query.filter_by(rating = rating).all()))
+    return results
+
+def searchByYear(year):
+    results = builtin_list(map(from_sql, Book.query.filter(Book.publishedDate.contains(year)).all()))
+    return results
+
 def _create_database():
     """
     If this script is run directly, create all the tables necessary to run the

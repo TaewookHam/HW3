@@ -35,8 +35,8 @@ def list():
 # [END list]
 
 
-@crud.route('/<id>')
-def view(id):
+@crud.route('/<id>',methods=['GET', 'POST'])
+def view(id):    
     book = get_model().read(id)
     return render_template("view.html", book=book)
 
@@ -55,18 +55,32 @@ def add():
 # [END add]
 
 # [START search_start]
-@crud.route('/search_start', methods=['GET', 'POST'])
+@crud.route('/search', methods=['GET', 'POST'])
 def search_start():
-          
     if request.method == 'POST':
         query = request.form["q"]
-        category = request.form['Category']
+        
+        if(query is not None):
+            category = request.form['Category']
 
-        if category == 'Title':
-            booklist = get_model().searchByTitle(query)
+            if category == 'Title':
+                booklist = get_model().searchByTitle(query)
             
-        return render_template("search_start.html")
-    return render_template("search_start.html")
+            elif category == 'Author':
+                booklist = get_model().searchByAuthor(query)
+                
+            elif category == 'Rating':
+                booklist = get_model().searchByRating(query)
+            
+            elif category == 'Description':
+                booklist = get_model().searchByDescription(query)
+            
+            elif category == 'Year':
+                booklist = get_model().searchByYear(query)
+                
+            return render_template("search.html", searchlist=booklist)
+        
+    return render_template("search.html")
     
 # [END search_start]
 

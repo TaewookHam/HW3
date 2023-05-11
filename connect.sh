@@ -1,1 +1,1 @@
-~/cloud-sql-proxy ee477-20180716:asia-northeast3:hw0
+~/cloud-sql-proxy ee477-20180716:asia-northeast3:hw0 --port 3307

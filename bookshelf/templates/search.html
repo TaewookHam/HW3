@@ -27,6 +27,7 @@ Select the Category<strong>(title, year, ...)</strong> and Search.
             <option value="Year">Year</option>
             <option value="Author">Author</option>
             <option value="Rating">Rating</option>
+            <option value="Description">Description</option>
         </select>
       <input type="search" id="query" name="q" placeholder="Search...">
       <input type="submit" value="Search">
@@ -42,6 +43,7 @@ Select the Category<strong>(title, year, ...)</strong> and Search.
         <div class="media-body">
             <h4>{{book.title}}</h4>
             <p>{{book.author}}</p>
+            <p>Your Rating:{{book.rating}}</p>
         </div>
     </a>
 </div>
