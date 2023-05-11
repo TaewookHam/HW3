@@ -65,20 +65,10 @@ def search_start():
         if category == 'Title':
             booklist = get_model().searchByTitle(query)
             
-        return redirect(url_for('.search',id=booklist))
-    return render_template("search.html")
+        return render_template("search_start.html")
+    return render_template("search_start.html")
     
-
 # [END search_start]
-
-# [START search]
-@crud.route('/search')
-def search():
-    return redirect(url_for('.list'))
-
-    
-    
-# # [END search]
 
 @crud.route('/<id>/edit', methods=['GET', 'POST'])
 def edit(id):
