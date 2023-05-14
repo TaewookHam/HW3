@@ -69,7 +69,6 @@ def signin():
         data = request.form.to_dict(flat=True)
 
         user = get_model().createUser(data)
-        user['id']
         return redirect(url_for('.list'))
 
     return render_template("signin.html",action = 'Sign in')
