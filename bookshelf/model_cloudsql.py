@@ -55,6 +55,18 @@ class Book(db.Model):
         return "<Book(title='%s', author=%s)" % (self.title, self.author)
 # [END model]
 
+# [START model]
+class User(db.Model):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    pwd = db.Column(db.String(255))
+    
+    def __repr__(self):
+        return "<User(id='%d', name='%s', pwd=%s)" % (self.id, self.name, self.pwd)
+# [END model]
+
 
 # [START list]
 def list(limit=10, cursor=None):
@@ -86,6 +98,19 @@ def create(data):
     return from_sql(book)
 # [END create]
 
+# [START createUser]
+def createUser(data):
+    user = User(**data)
+    db.session.add(user)
+    db.session.commit()
+    return from_sql(user)
+# [END createUser]
+
+def getName(name):
+    user = User.query.filter_by(name = name).first()
+    if user is None:
+        return from_sql(user, 'user')
+    else: return None
 
 # [START update]
 def update(data, id):
@@ -96,6 +121,14 @@ def update(data, id):
     return from_sql(book)
 # [END update] 
 
+# [START updateUser]
+def updateUser(data, id):
+    user = User.query.get(id)
+    for k, v in data.items():
+        setattr(user, k, v)
+    db.session.commit()
+    return from_sql(user)
+# [END updateUser]
 
 def delete(id):
     Book.query.filter_by(id=id).delete()

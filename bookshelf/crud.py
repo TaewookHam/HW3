@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from bookshelf import get_model
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, redirect, render_template, request, url_for, session
 
 
 crud = Blueprint('crud', __name__)
@@ -27,6 +27,11 @@ def list():
         token = token.encode('utf-8')
 
     books, next_page_token = get_model().list(cursor=token)
+    if 'name' in session:
+        return render_template(
+        "list.html",
+        books=books,
+        next_page_token=next_page_token)
     return render_template(
         "list.html",
         books=books,
@@ -40,6 +45,9 @@ def view(id):
     book = get_model().read(id)
     return render_template("view.html", book=book)
 
+def userview(id):
+    user = get_model().read(id)
+    return render_template("userview.html", user=user)
 
 # [START add]
 @crud.route('/add', methods=['GET', 'POST'])
@@ -53,6 +61,59 @@ def add():
 
     return render_template("form.html", action="Add", book={})
 # [END add]
+
+# [START signin] - add form of user
+@crud.route('/signin', methods=['GET', 'POST'])
+def signin():
+    if request.method == 'POST':
+        data = request.form.to_dict(flat=True)
+
+        user = get_model().createUser(data)
+        user['id']
+        return redirect(url_for('.list'))
+
+    return render_template("signin.html",action = 'Sign in')
+# [END signin]
+
+
+
+@crud.route("/login")
+def login():
+    if request.method == 'POST':
+        data = request.form.to_dict(flat=True)
+        name = data['name']
+        pwd = data['password']
+        
+        user = get_model().getName(name)
+        if user:
+            if user['password'] == pwd:
+                session['id'] = user['id']
+                session['name'] = user['name']
+                return redirect(url_for('.list'))
+            else:
+                return render_template("login.html", error="Invalid password")
+            
+        else:
+            return render_template("login.html", error="Invalid username")
+            
+            
+        return 
+    
+    return render_template("login.html")
+
+@crud.route("/logout")
+def logout():
+    session.pop("id",None)
+    session.pop("name",None)
+    return redirect(url_for('.list'))
+
+
+
+
+
+
+
+
 
 # [START search_start]
 @crud.route('/search', methods=['GET', 'POST'])
