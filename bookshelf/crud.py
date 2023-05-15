@@ -63,42 +63,43 @@ def add():
 # [END add]
 
 # [START signin] - add form of user
-@crud.route('/signin', methods=['GET', 'POST'])
-def signin():
+@crud.route('/signup', methods=['GET', 'POST'])
+def signup():
     if request.method == 'POST':
         data = request.form.to_dict(flat=True)
 
         user = get_model().createUser(data)
         return redirect(url_for('.list'))
 
-    return render_template("signin.html",action = 'Sign in')
+    return render_template("signup.html",action = 'Sign up')
 # [END signin]
 
-
-
-@crud.route("/login")
+@crud.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        
         data = request.form.to_dict(flat=True)
         name = data['name']
-        pwd = data['password']
+        pwd = data['pwd']
         
         user = get_model().getName(name)
-        if user:
-            if user['password'] == pwd:
+        
+        if user is not None:
+            print("log in success!")
+            
+            if user['pwd'] == pwd:
                 session['id'] = user['id']
                 session['name'] = user['name']
                 return redirect(url_for('.list'))
             else:
-                return render_template("login.html", error="Invalid password")
+                print("Invalid password")
+                return render_template("login.html")
             
         else:
-            return render_template("login.html", error="Invalid username")
-            
-            
-        return 
+            print("Invalid username")
+            return render_template("login.html")
     
-    return render_template("login.html")
+    return render_template("login.html",action = 'Login')
 
 @crud.route("/logout")
 def logout():

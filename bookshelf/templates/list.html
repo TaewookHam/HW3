@@ -18,11 +18,17 @@
 
 {% block content %}
 
+<div>
+  
+  <h5>Name: {{session['name']}}</h5>
+
+</div>
+
 <h3>Books
   <h5>
   <!-- Sign in Button -->
-  <a href="/books/signin" class="btn"> 
-    Sign in
+  <a href="/books/signup" class="btn"> 
+    Sign up
   </a>
   <!-- Log in Button -->
   <a href="/books/login" class="btn"> 

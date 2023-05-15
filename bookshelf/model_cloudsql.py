@@ -108,8 +108,8 @@ def createUser(data):
 
 def getName(name):
     user = User.query.filter_by(name = name).first()
-    if user is None:
-        return from_sql(user, 'user')
+    if user is not None:
+        return from_sql(user)
     else: return None
 
 # [START update]
@@ -121,14 +121,6 @@ def update(data, id):
     return from_sql(book)
 # [END update] 
 
-# [START updateUser]
-def updateUser(data, id):
-    user = User.query.get(id)
-    for k, v in data.items():
-        setattr(user, k, v)
-    db.session.commit()
-    return from_sql(user)
-# [END updateUser]
 
 def delete(id):
     Book.query.filter_by(id=id).delete()
